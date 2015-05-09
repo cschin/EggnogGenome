@@ -5,8 +5,8 @@ Expected workflow:
 
 1. Download Eggnog database. Required files are:
 
-    * eggnog4.proteins.core_periphery.fa.gz: protein FASTA that will be used as BLAST database
-    * data/NOG/NOG.members.tsv.gz: table mapping Eggnog proteins to their COG function(s)
+   * eggnog4.proteins.core_periphery.fa.gz: protein FASTA that will be used as BLAST database
+   * data/NOG/NOG.members.tsv.gz: table mapping Eggnog proteins to their COG function(s)
 
 2. Transform the Eggnog proteins FASTA into BLAST database.
    Eg: makeblastdb -dbtype prot -in eggnog4.proteins.core_periphery.fa -out eggnog.blastdb
@@ -20,6 +20,8 @@ Expected workflow:
 
 4. Run eggnog_genome.py
 
+
+Links:
 
 `Eggnog homepage <http://eggnogdb.embl.de/#/app/home>`_
 
