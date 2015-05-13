@@ -53,6 +53,7 @@ __credits__ = ["Sébastien Gélis-Jeanvoine"]
 __maintainer__ = "Sébastien Gélis-Jeanvoine"
 __email__ = "sebastien@gelis.ch"
 
+
 import argparse
 from collections import Counter, defaultdict
 import re
@@ -140,14 +141,15 @@ def log(hits_to_funcs):
     """
     print("Writing log file...")
 
-    funcs_counter = Counter()
+    funcs_counter = Counter(hits_to_funcs.values())
+    print(funcs_counter)
     hypothetical = funcs_counter["S"] + funcs_counter["R"]
     nonempty = len(hits_to_funcs) - funcs_counter[""]
 
     with open("eggnog.log", "w") as outf:
         outf.write("Total query proteins: {}\n".format(len(hits_to_funcs)))
         outf.write("Annotated: {0} ({1:0.2f}%)\n".format(nonempty, nonempty / len(hits_to_funcs) * 100))
-        outf.write("Hypothetical: {0} ({1:0.2f}%)\n".format(hypothetical, hypothetical / len(hits_to_funcs) * 100))
+        outf.write("Hypothetical: {0} ({1:0.2f}% of all queries)\n".format(hypothetical, hypothetical / len(hits_to_funcs) * 100))
 
 
 def histogram(hits_to_funcs):
@@ -162,9 +164,13 @@ def histogram(hits_to_funcs):
     """
     print("Writing histogram...")
 
-    funcs_histogram = Counter(hits_to_funcs.values())
+    one_letter_funcs = []
+    for funcs in hits_to_funcs.values():
+        one_letter_funcs += list(funcs)
+
+    funcs_histogram = Counter(one_letter_funcs)
     with open("eggnog_histogram.csv", "w") as outf:
-        for func in funcs_histogram.elements():
+        for func in funcs_histogram.keys():
             outf.write("{0};{1}\n".format(func, funcs_histogram[func]))
 
 
@@ -192,12 +198,15 @@ def main():
     args = argparser.parse_args()
 
     # Start analyses
-    prots_to_funcs = parse_eggnog(args.members_file[0])
-    hits_to_funcs = parse_blast(args.blast[0], prots_to_funcs)
-    if args.log_flag:
-        log(hits_to_funcs)
-    if args.hist_flag:
-        histogram(hits_to_funcs)
+    # prots_to_funcs = parse_eggnog(args.members_file[0])
+    # hits_to_funcs = parse_blast(args.blast[0], prots_to_funcs)
+    # if args.log_flag:
+    #     log(hits_to_funcs)
+    # if args.hist_flag:
+    #     histogram(hits_to_funcs)
+    hits_to_funcs = {"dnaA": "K", "dnaB": "S", "dnaC": "R", "dnaD": "", "dnaE": "EK"}
+    log(hits_to_funcs)
+    histogram(hits_to_funcs)
 
     # Write final table to output file
     print("Writing results to output file...")

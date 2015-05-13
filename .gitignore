@@ -3,6 +3,4 @@
 # Test files
 dummy.blast
 eggnog.log
-eggnog_genome_output.csv
-eggnog_histogram.csv
-memberstest.tsv
+*.[ct]sv
